@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
     static String MQTTHOST ="tcp://broker.hivemq.com:1883";
     static String USERNAME ="sendy";
     static String PASSWORD = "93a3a43dbac9ddd362702fb525b42a2d";
-    String  topicName;
+    String  topicName,message;
 
     String clientID;
     MqttAndroidClient client;
     Button connect,subscribe,unsubscribe,publish;
     Vibrator vibrator;
-    EditText recvmsg,editTextTopic;
+    EditText recvmsg,editTextTopic,pubmsg;
     Ringtone ringtone;
     Databasehelper db;
 
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recvmsg=findViewById(R.id.recevMsg);
+        pubmsg=findViewById(R.id.pubMsg);
 
         editTextTopic = (EditText) findViewById(R.id.topic);
         topicName = editTextTopic.getText().toString();
@@ -77,15 +78,16 @@ public class MainActivity extends AppCompatActivity {
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              publish(topicName);            }
+              publish(topicName,message);            }
         });
 
     }
  //publish a message
-public  void publish(String topicName)  {
+public  void publish(String topicName,String  message)  {
  topicName = editTextTopic.getText().toString();
+ message = pubmsg.getText().toString();
 
-    String message = "hello world from valentine at sendy ";
+//    String message = "hello world from valentine at sendy ";
     try {
         client.publish(topicName, message.getBytes(),2,false);
     } catch ( MqttException e) {
