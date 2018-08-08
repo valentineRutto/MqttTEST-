@@ -80,13 +80,7 @@
         android:layout_alignParentBottom="true"
         android:text="UnSubscribe" />
 
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:onClick="showHistory"
-        android:text="History" />
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -96,8 +90,7 @@
         android:id="@+id/btnDisc"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
-        android:layout_alignTop="@+id/btnConn"
-        android:onClick="Disconnect"
+        android:onClick="disconnect"
         android:text="Disconnect" />
 
     <Button

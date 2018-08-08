@@ -25,8 +25,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class MainActivity extends AppCompatActivity {
 
     static String MQTTHOST ="tcp://broker.hivemq.com:1883";
-    static String USERNAME ="sendy";
-    static String PASSWORD = "93a3a43dbac9ddd362702fb525b42a2d";
+    static String USERNAME =""; //your websocket client username
+    static String PASSWORD = ""; //your websocket client password
     String  topicName,message;
 
     String clientID;
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     Vibrator vibrator;
     EditText recvmsg,editTextTopic,pubmsg;
     Ringtone ringtone;
-    Databasehelper db;
 
 
     @Override
@@ -49,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
         editTextTopic = (EditText) findViewById(R.id.topic);
         topicName = editTextTopic.getText().toString();
 
-        Connect();
+        connect();
 
         connect=findViewById(R.id.btnConn);
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Connect();
+                connect();
             }
         });
 
@@ -64,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-              Subscribe(topicName,recvmsg);            }
+              subscribe(topicName,recvmsg);            }
         });
 
         unsubscribe=findViewById(R.id.btnUnSub);
         unsubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              Unsubscribe(topicName);            }
+              unsubscribe(topicName);            }
         });
 
         publish=findViewById(R.id.btnPub);
@@ -100,7 +99,7 @@ public  void publish(String topicName,String  message)  {
 
 //subscribe code
 //public void Subscribe(View v){
-public void Subscribe(  String topicName, final EditText recv){
+public void subscribe(  String topicName, final EditText recv){
         topicName = editTextTopic.getText().toString();
 
     try {
@@ -133,7 +132,7 @@ public void Subscribe(  String topicName, final EditText recv){
 
 
 //unsubscribe
-public void Unsubscribe(String topicName){
+public void unsubscribe(String topicName){
     topicName = editTextTopic.getText().toString();
      try {
         IMqttToken unsubToken = client.unsubscribe(topicName);
@@ -155,7 +154,7 @@ public void Unsubscribe(String topicName){
     }
 }
 //connect to service
-    public void Connect() {
+    public void connect() {
 
         clientID = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(),MQTTHOST,clientID);
@@ -186,7 +185,7 @@ public void Unsubscribe(String topicName){
         }
     }
 
-    public void Disconnect(View view) {
+    public void disconnect(View view) {
         topicName = editTextTopic.getText().toString();
 
         try {
@@ -209,28 +208,7 @@ public void Unsubscribe(String topicName){
             e.printStackTrace();
         }
     }
-    public void showHistory(View view){
-        Cursor res = db.retrieveData();
-        if(res.getCount() == 0){
-            showMessage("Error","No data in db");
-            return;
-        }
 
-        StringBuffer buffer = new StringBuffer();
-        while (res.moveToNext()){
-            buffer.append("ID : " + res.getString(0) + "\n");
-            buffer.append("Topic : " + res.getString(1) + "\n");
-            buffer.append("Message : " + res.getString(2) + "\n");
-        }
-        showMessage("History",buffer.toString());
-    }
-    public void showMessage(String title, String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
-    }
 
 
 }
